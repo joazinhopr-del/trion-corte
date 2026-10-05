@@ -192,3 +192,15 @@ compatível) e enviar para o FastAPI apenas a chave/URL privada do arquivo.
 Também não use SQLite/local disk como persistência definitiva no Vercel. Para a
 versão comercial, use PostgreSQL + object storage + worker/queue para o pipeline
 de Whisper/FFmpeg. O Vercel pode continuar hospedando a aplicação web/API leve.
+
+
+## Vercel entrypoint (v0.2.2)
+
+This package uses the root-level `main.py` as the explicit FastAPI entrypoint:
+
+```toml
+[tool.vercel]
+entrypoint = "main:app"
+```
+
+`main.py` imports `app` from `app.main`. Keep `main.py`, `pyproject.toml`, `requirements.txt`, and the `app/` directory at the repository root. In Vercel, Project Settings > Build and Deployment > Root Directory should be empty (repository root), unless these files are intentionally inside a subdirectory.
