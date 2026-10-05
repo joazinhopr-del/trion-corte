@@ -204,3 +204,22 @@ entrypoint = "main:app"
 ```
 
 `main.py` imports `app` from `app.main`. Keep `main.py`, `pyproject.toml`, `requirements.txt`, and the `app/` directory at the repository root. In Vercel, Project Settings > Build and Deployment > Root Directory should be empty (repository root), unless these files are intentionally inside a subdirectory.
+
+## Vercel: bundle maior que 500 MB
+
+Esta versão inclui `vercel.json` com **Fluid Compute** habilitado. O pipeline de IA usa dependências nativas pesadas (`faster-whisper`, `ctranslate2`, `opencv` e `numpy`), por isso o bundle Python pode ultrapassar 500 MB.
+
+Para projetos Vercel que ainda não estão inscritos em **Large Functions**, adicione no painel do projeto:
+
+- **Settings → Environment Variables**
+- Nome: `VERCEL_SUPPORT_LARGE_FUNCTIONS`
+- Valor: `1`
+- Ambientes: Production, Preview e Development (ou pelo menos o ambiente que você está implantando)
+
+Depois salve e faça um **Redeploy**. O `vercel.json` já ativa `fluid: true`.
+
+Opcionalmente, para diagnosticar o tamanho do bundle, adicione também `VERCEL_ANALYZE_BUILD_OUTPUT=1` e faça um deploy de teste.
+
+### Importante sobre vídeos grandes
+
+Resolver o bundle permite publicar a aplicação, mas uploads de vídeo grandes não devem atravessar a função HTTP do Vercel. O limite de payload de Functions é muito menor que um vídeo típico. Para a versão de produção, o upload será feito diretamente para armazenamento de objetos (R2/S3/Blob) e o processamento será movido para um worker dedicado.
