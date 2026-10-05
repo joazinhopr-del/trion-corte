@@ -170,3 +170,25 @@ FastAPI
 ## Conteúdo do YouTube
 
 Para um produto comercial, use upload direto ou integração autorizada com a conta/canal do próprio usuário. Evite basear o serviço em download irrestrito de vídeos de terceiros.
+
+## Deploy no Vercel — correção de entrypoint
+
+Esta versão inclui duas formas explícitas para o Vercel localizar o FastAPI:
+
+- `pyproject.toml` → `[tool.vercel] entrypoint = "app.main:app"`;
+- `main.py` na raiz → reexporta `app` de `app.main` como fallback de descoberta.
+
+Depois de enviar estes arquivos ao repositório, faça um novo deploy. O endpoint
+`/health` deve responder com `{"ok": true, ...}` quando a aplicação estiver no ar.
+
+### Atenção: Vercel não deve receber os vídeos diretamente em produção
+
+Corrigir o entrypoint resolve o **build**, mas o endpoint atual `/api/jobs` ainda
+recebe o arquivo de vídeo através da própria Function. Em Vercel Functions há
+limite de payload HTTP, portanto a arquitetura de produção deve usar upload
+**direto do navegador para object storage** (Vercel Blob, Cloudflare R2, S3 ou
+compatível) e enviar para o FastAPI apenas a chave/URL privada do arquivo.
+
+Também não use SQLite/local disk como persistência definitiva no Vercel. Para a
+versão comercial, use PostgreSQL + object storage + worker/queue para o pipeline
+de Whisper/FFmpeg. O Vercel pode continuar hospedando a aplicação web/API leve.
