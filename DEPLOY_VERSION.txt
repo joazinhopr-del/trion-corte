@@ -1,0 +1,3 @@
+ClipForge AI v2.4 - Vercel autodetect
+No [tool.vercel] entrypoint is configured.
+Root entrypoint: main.py -> app

@@ -223,3 +223,13 @@ Opcionalmente, para diagnosticar o tamanho do bundle, adicione também `VERCEL_A
 ### Importante sobre vídeos grandes
 
 Resolver o bundle permite publicar a aplicação, mas uploads de vídeo grandes não devem atravessar a função HTTP do Vercel. O limite de payload de Functions é muito menor que um vídeo típico. Para a versão de produção, o upload será feito diretamente para armazenamento de objetos (R2/S3/Blob) e o processamento será movido para um worker dedicado.
+
+
+## Vercel v2.4 — detecção automática do FastAPI
+
+Nesta versão **não existe** `[tool.vercel] entrypoint` no `pyproject.toml`.
+O Vercel deve detectar automaticamente o arquivo `main.py` localizado na raiz, que expõe `app`.
+
+Se o log ainda mencionar `app.main:app`, o deploy está usando arquivos ou commit antigos. Exclua o `pyproject.toml` antigo do repositório, envie este arquivo novo e faça redeploy sem cache.
+
+O arquivo `DEPLOY_VERSION.txt` pode ser usado para confirmar que a v2.4 foi realmente enviada ao repositório.

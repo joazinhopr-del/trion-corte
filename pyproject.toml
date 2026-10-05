@@ -1,6 +1,6 @@
 [project]
 name = "clipforge-ai"
-version = "0.2.3"
+version = "0.2.4"
 description = "ClipForge AI - automatic long-form video clipping SaaS"
 requires-python = ">=3.12,<3.15"
 dependencies = [
@@ -17,6 +17,3 @@ dependencies = [
 
 [tool.uv]
 package = false
-
-[tool.vercel]
-entrypoint = "main:app"
