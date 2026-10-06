@@ -1,12 +1,4 @@
-.venv/
-__pycache__/
-*.pyc
-*.pyo
-*.db
-*.db-shm
-*.db-wal
-data/uploads/*
-data/outputs/*
-data/db/*
-!data/uploads/.gitkeep
-!data/outputs/.gitkeep
+processor-worker/**
+*.zip
+*.log
+.DS_Store
